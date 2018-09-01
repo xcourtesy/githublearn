@@ -10,11 +10,11 @@
 
 Trong dự án này, chúng ta sử dụng hệ điều hành Ubuntu 16.04 LTS.
 
-<img>
+![Imgur](https://i.imgur.com/uQZ6J5O.png)
 
 ### 2. Phần mềm Eclipse for C/C++ Developers
-
 Để nghiên cứu về KVM hypervisor, chúng ta sử dụng IDE Eclipse để phân tích cấu trúc mã nguồn của KVM hypervisor. 
+![Imgur](https://i.imgur.com/eBdWdpU.png)
 ### 3. Phần mềm gedit và nano
 gedit và nano là hai phần mềm mặc định trong Ubuntu 16.04 . Ta sử dụng hai công cụ này để xem, chỉnh sửa và cấu hình các file mã nguồn, file hệ thống. Ngoài ra, sử dụng gedit để tạo báo cáo định dạng file markdown.
 ### 4. Phần mềm git
