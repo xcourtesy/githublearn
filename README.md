@@ -14,9 +14,16 @@ Trong dự án này, chúng ta sử dụng hệ điều hành Ubuntu 16.04 LTS.
 
 ### 2. Phần mềm Eclipse for C/C++ Developers
 Để nghiên cứu về KVM hypervisor, chúng ta sử dụng IDE Eclipse để phân tích cấu trúc mã nguồn của KVM hypervisor. 
+
 ![Imgur](https://i.imgur.com/eBdWdpU.png)
+
 ### 3. Phần mềm gedit và nano
 gedit và nano là hai phần mềm mặc định trong Ubuntu 16.04 . Ta sử dụng hai công cụ này để xem, chỉnh sửa và cấu hình các file mã nguồn, file hệ thống. Ngoài ra, sử dụng gedit để tạo báo cáo định dạng file markdown.
+
+![Imgur](https://i.imgur.com/mIBmKZx.png)
+
+![Imgur](https://i.imgur.com/Rbz1bEZ.png)
+
 ### 4. Phần mềm git
 Để tải xuống mã nguồn các gói mã nguồn của KVM hypervisor, ta sử dụng công cụ git.
 Cài đặt
@@ -28,6 +35,7 @@ Sau khi quá trình cài đặt hoàn tất, tiến hành cấu hình cho git
 
 ### 5. Phần mềm Microsoft Visio
 Để tiến hành vẽ các sơ đồ, đồ thị trong việc phân tích cấu trúc của KVM hypervisor, ta sử dụng công cụ là phần mềm Microsoft Visio.
+
 ![MSV](https://i.imgur.com/2FnSqT4.png)
 
 ## Mã nguồn KVM hypervisor
