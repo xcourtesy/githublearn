@@ -106,7 +106,7 @@ sudo apt-get install libnl-3-dev
 sudo apt-get install libnl-route-3-dev
 .\configure
 make
-make install
+sudo make install
 ```
 
 ![Imgur](https://i.imgur.com/4URsjYO.png)
@@ -115,7 +115,7 @@ make install
 ### 3. virtinst
 Trong thư mục source code virtinst, mở terminal, lần lượt gõ các lệnh sau để compile và install
 ```shell
-python setup.py install
+sudo python setup.py install
 ```
 
 ![Imgur](https://i.imgur.com/wcEPlqs.png)
@@ -126,7 +126,7 @@ Trong thư mục source code bridge-utils, mở terminal, lần lượt gõ các
 autoconf
 .\configure
 make
-make install
+sudo make install
 ```
 
 ![Imgur](https://i.imgur.com/OxB61ET.png)
@@ -134,9 +134,8 @@ make install
 ### 5. libvirt-bin
 Trong thư mục source code libvirt-bin, mở terminal, lần lượt gõ các lệnh sau để compile và install
 ```shell
-mkdir build
-cd build
-..\configure
 make
-make install
+sudo make install
 ```
+
+![Imgur](https://i.imgur.com/PABBrnS.png)
