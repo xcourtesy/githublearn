@@ -31,7 +31,11 @@ Trên màn hình terminal, sử dụng lệnh cài đặt git
 ```shell
 sudo apt-get install git
 ```
-Sau khi quá trình cài đặt hoàn tất, tiến hành cấu hình cho git
+Sau khi quá trình cài đặt hoàn tất, tiến hành cấu hình cho git trên terminal bằng lệnh
+```shell
+git config --global user.name "<Tên người dùng>"
+git config --global user.email "<Địa chỉ mail>"
+```
 
 ### 5. Phần mềm Microsoft Visio
 Để tiến hành vẽ các sơ đồ, đồ thị trong việc phân tích cấu trúc của KVM hypervisor, ta sử dụng công cụ là phần mềm Microsoft Visio.
@@ -40,7 +44,9 @@ Sau khi quá trình cài đặt hoàn tất, tiến hành cấu hình cho git
 
 ## Mã nguồn KVM hypervisor
 Dựa trên bản hướng dẫn của anh Dũng qua telegram, có địa chỉ tại:
-...
+
+*https://taiosolve.xyz/installing-kvm-ubuntu-16-04-lts-headless-server/*
+
 Tiến hành tải về mã nguồn cài đặt. Trên màn hình terminal, lần lượt dùng các lệnh
 ```shell
 sudo apt-get source qemu-kvm
@@ -69,3 +75,54 @@ Mã nguồn các gói sẽ được tải xuống.
 
 ## Biên dịch và cài đặt các gói
 
+### 1. qemu-kvm
+Trong thư mục source code qemu-kvm, mở terminal, lần lượt gõ các lệnh sau để compile và install
+```shell
+mkdir build
+cd build
+..\configure
+make
+make install
+```
+
+![Imgur](https://i.imgur.com/iGOit7F.png)
+
+Sau khi cài đặt xong
+
+### 2. libvirt-bin
+Trong thư mục source code libvirt-bin, mở terminal, lần lượt gõ các lệnh sau để compile và install
+```shell
+mkdir build
+cd build
+..\configure
+make
+make install
+```
+
+### 3. virtinst
+Trong thư mục source code libvirt-bin, mở terminal, lần lượt gõ các lệnh sau để compile và install
+```shell
+mkdir build
+cd build
+..\configure
+make
+make install
+```
+### 4. bridge-utils
+Trong thư mục source code libvirt-bin, mở terminal, lần lượt gõ các lệnh sau để compile và install
+```shell
+mkdir build
+cd build
+..\configure
+make
+make install
+```
+### 5. libvirt-bin
+Trong thư mục source code libvirt-bin, mở terminal, lần lượt gõ các lệnh sau để compile và install
+```shell
+mkdir build
+cd build
+..\configure
+make
+make install
+```
