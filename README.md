@@ -113,23 +113,24 @@ make install
 
 
 ### 3. virtinst
-Trong thư mục source code libvirt-bin, mở terminal, lần lượt gõ các lệnh sau để compile và install
+Trong thư mục source code virtinst, mở terminal, lần lượt gõ các lệnh sau để compile và install
 ```shell
-mkdir build
-cd build
-..\configure
-make
-make install
+python setup.py install
 ```
+
+![Imgur](https://i.imgur.com/wcEPlqs.png)
+
 ### 4. bridge-utils
-Trong thư mục source code libvirt-bin, mở terminal, lần lượt gõ các lệnh sau để compile và install
+Trong thư mục source code bridge-utils, mở terminal, lần lượt gõ các lệnh sau để compile và install
 ```shell
-mkdir build
-cd build
-..\configure
+autoconf
+.\configure
 make
 make install
 ```
+
+![Imgur](https://i.imgur.com/OxB61ET.png)
+
 ### 5. libvirt-bin
 Trong thư mục source code libvirt-bin, mở terminal, lần lượt gõ các lệnh sau để compile và install
 ```shell
