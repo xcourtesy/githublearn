@@ -82,22 +82,35 @@ mkdir build
 cd build
 ..\configure
 make
-make install
+sudo make install
 ```
 
 ![Imgur](https://i.imgur.com/iGOit7F.png)
 
-Sau khi cài đặt xong
 
 ### 2. libvirt-bin
+Để cài libvirt-bin, ta cần cài bổ sung một vài gói hỗ trợ bao gồm: libxml2, yail, libdevmapper-dev, libpciaccess-dev, libnl-3-dev,libnl-route-3-dev.
+
 Trong thư mục source code libvirt-bin, mở terminal, lần lượt gõ các lệnh sau để compile và install
 ```shell
-mkdir build
-cd build
-..\configure
+sudo apt-get install libxml2
+sudo apt-get install cmake
+git clone git://github.com/lloyd/yajl
+cd yajl
+./configure
+make
+sudo make install
+cd ..
+sudo apt-get install libpciaccess-dev
+sudo apt-get install libnl-3-dev
+sudo apt-get install libnl-route-3-dev
+.\configure
 make
 make install
 ```
+
+![Imgur](https://i.imgur.com/4URsjYO.png)
+
 
 ### 3. virtinst
 Trong thư mục source code libvirt-bin, mở terminal, lần lượt gõ các lệnh sau để compile và install
