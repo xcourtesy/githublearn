@@ -41,21 +41,23 @@ sudo apt-get source virtinst
 sudo apt-get source cpu-checker
 sudo apt-get source bridge-utils
 ```
+Mã nguồn các gói sẽ được tải xuống.
+
 ### 1. qemu-kvm
 * Số file: 4419
-* Kích thước gói(chưa nén) : 49,274,918 Bytes
+* Kích thước gói (chưa nén) : 49,274,918 Bytes
 ### 2. libvirt-bin
 * Số file: 8777
-* Kích thước gói(chưa nén) : 150,834,551 Bytes
+* Kích thước gói (chưa nén) : 150,834,551 Bytes
 ### 3. virtinst
 * Số file: 603
-* Kích thước gói(chưa nén) : 13,107,217 Bytes
+* Kích thước gói (chưa nén) : 13,107,217 Bytes
 ### 4. cpu-checker
 * Số file: 7300
 * Kích thước gói(chưa nén) : 9,378,199 Bytes
 ### 5. bridge-utils
 * Số file: 41
-* Kích thước gói(chưa nén) : 104,361 Bytes
+* Kích thước gói (chưa nén) : 104,361 Bytes
 
-
+## Biên dịch và cài đặt các gói
 
