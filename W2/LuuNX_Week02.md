@@ -25,11 +25,6 @@
  Dựa trên hình chúng ta có thể thấy, ảo hóa sẽ được thực hiện trên mọi thành phần. Ví dụ, công nghệ SDN (Software Define Network) thực hiện ảo hóa mạng, công nghệ SDS (Software Define Storage) thực hiện ảo hóa lưu trữ, … Trong khuôn khổ tìm hiểu về KVM, chúng ta tập chung vào Software Virtualization.
 
 ## <a name="kvm"></a>2. Giới thiệu chung về KVM
-**Lịch Sử**
-
-Kernel-based Virtual Machine (KVM) là một phần của Linux Kernel. KVM được giới thiệu lần đầu vào ngày 19-10-2006 bởi Avi Kivity. KVM đại diện cho thế hệ phần mềm ảo hóa mã nguồn mở mới nhất. Mục tiêu của dự án là tạo ra phần mềm ảo hóa hiện đại dựa trên kinh nghiệm của những thế hệ công nghệ ảo hóa trước đó và sự thúc đẩy từ công nghệ phần cứng hiện đại VT-x, AMD-V.
-
-Công nghệ KVM sử dụng dựa trên năng lực hỗ trợ ảo hóa phần cứng từ các CPU của intel và amd. Việc tìm hiểu về năng lực này sẽ giúp chúng ta có cái nhìn cơ sở cho việc tìm hiểu KVM.
 
 ### <a name ="protect_ring"></a>2.1 Công nghệ Hardware-assisted Virtualization
 Trong khoa học máy tính, khái niệm Protection Rings hay hierarchical protection domains dùng để chỉ các mức độ phân cấp truy cập dữ liệu của hệ thống.
@@ -43,6 +38,16 @@ Các hệ điều hành như Linux hay Windows cũng đều sử dụng mô hìn
 
 Vấn đề về phân quyền truy cập sẽ không có gì đáng bàn khi sử dụng một hệ thống thông thường. Tuy nhiên, khi thực hiện ảo hóa, vấn đề này trở nên phức tạp. Các công cụ ảo hóa (hypervisor/virtual machine monitor) đều cần truy cập bộ nhớ, CPU và thiết bị ngoại vi từ phần cứng vật lý. Bởi vì vậy, nghiễm nhiên, hypervisor phải được đặt ở Ring 0. Và vì hypervisor chiếm chỗ, các máy ảo ( Virtual Machines hay VM) sẽ không có khả năng đặt ở Ring 0 nữa. Mặt khác, các hệ điều hành khi được cài đặt như một máy ảo cũng không biết được rằng chúng là máy ảo. Hệ điều hành của máy ảo sẽ vẫn yêu cầu quyền truy cập tất cả mọi tài nguyên ở mức Ring 0 như thông thường. Và vậy là, ta phải tìm cách đặt máy ảo chạy ở các mức Ring khác hoặc chỉnh sửa lại nó để nó chạy ở chế độ user mode.
 
-Intel và AMD đều nhận ra sự thách thức trên. Họ đã độc lập phát triển một tính năng mới cho các dòng vi xử lý kiến trúc X86 của mình. Tính năng này có tên là Hardware-assisted Virtualization. Intel gọi nó là Virtualization Technology (VT) và AMD gọi nó là Secure Virtual Machine (SVM). Tính năng này cho phép các máy ảo chạy ở đúng mức phân quyền mong muốn là Ring 0. Còn vị trí vốn có Ring 0 là các hypervisor sẽ chạy ở một mức phân quyền mới là Ring -1. Do sự hỗ trợ này, hiệu năng ảo hóa tăng lên đáng kể và việc thiết kế một giải pháp ảo hóa cũng trở nên đơn giản hơn.
+Intel và AMD đều nhận ra sự thách thức trên. Họ đã độc lập phát triển một tính năng mới cho các dòng vi xử lý kiến trúc X86 của mình. Tính năng này có tên là Hardware-assisted Virtualization. Intel gọi nó là Virtualization Technology (VT) và AMD gọi nó là Secure Virtual Machine (SVM). Tính năng này cho phép các máy ảo chạy ở đúng mức phân quyền mong muốn là Ring 0. Còn vị trí vốn có Ring 0 là các hypervisor sẽ chạy ở một mức phân quyền mới là Ring -1. Do sự hỗ trợ này, hiệu năng ảo hóa tăng lên đáng kể và việc thiết kế một giải pháp ảo hóa cũng trở nên đơn giản hơn. KVM chính là ví dụ điển hình nhất sử dụng công nghệ ảo hóa mới này.
 
+![.](src-image/w2_3.png)
 
+## <a name="kvm2"></a>2.2 Kernel-based Virtual Machine
+
+Kernel-based Virtual Machine (KVM) là một module của Linux Kernel. KVM được giới thiệu lần đầu vào ngày 19/10/2006 bởi Avi Kivity. KVM đại diện cho thế hệ phần mềm ảo hóa mã nguồn mở mới nhất. Mục tiêu của dự án là tạo ra phần mềm ảo hóa hiện đại dựa trên kinh nghiệm của những thế hệ công nghệ ảo hóa trước đó và sự thúc đẩy từ công nghệ phần cứng hiện đại VT-x, AMD-V.
+
+KVM chuyễn đỗi Linux Kernel thành một hypervisor. Thông qua KVM, các máy ảo được cài đặt (guestOS) có thể chạy trực tiếp guest code trên CPU vật lý. KVM không hoạt động riêng rẽ mà nó cần tới sự hỗ trợ của QEMU. QEMU là một phần mềm chạy trên user mode có năng lực mô phỏng (emulation) các phần cứng vật lý. Nó có thể mô phỏng một bộ xử lý và hầu hết các thiết bị ngoại vi như ổ đĩa, mạng, VGA, PCI, USB, serial/parallel port để tạo ra môi trường phần ứng ảo hóa hoàn chỉnh để cài đặt các máy ảo trên nó.
+
+## <a name="kvm3"></a>2.3 Kiến trúc tổng quát của KVM
+![.](src-image/w2_4.png)
+Nhìn tổng thể, để tìm hiểu về KVM ta cần quan tâm tới kiến trúc tổng quát của KVM.
