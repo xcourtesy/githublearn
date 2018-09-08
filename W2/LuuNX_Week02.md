@@ -50,6 +50,15 @@ KVM chuyễn đỗi Linux Kernel thành một hypervisor. Thông qua KVM, các m
 
 ## <a name="kvm3"></a>2.3 Kiến trúc tổng quát của KVM
 ![.](src-image/w2_4.png)
-Nhìn tổng thể, để tìm hiểu về KVM ta cần quan tâm tới kiến trúc tổng quát của KVM. KVM gồm hai thành phần chính là qemu-kvm và kvm.ko. qemu-kvm về bản chất chính là bản chỉnh sửa từ QEMU gốc. qemu-kvm đảm nhiệm vai trò mô phỏng các phần cứng ảo cho hoạt động của máy ảo. qemu-kvm làm việc ở user mode. Phần còn lại chính là kvm.ko . kvm.ko là một module được tích hợp sẵn trong Linux Kernel từ phiên bản Linux Kernel 2.6.60. kvm.ko đảm nhiệm vai trò hỗ trợ máy ảo chạy trực tiếp native code trên CPU vật lý.
+Nhìn tổng thể, để tìm hiểu về KVM ta cần quan tâm tới kiến trúc tổng quát của KVM. KVM gồm hai thành phần chính là qemu-kvm và kvm.ko. qemu-kvm về bản chất chính là bản chỉnh sửa từ QEMU gốc. qemu-kvm đảm nhiệm vai trò mô phỏng các phần cứng ảo cho hoạt động của máy ảo. qemu-kvm làm việc ở user mode. Phần còn lại chính là kvm.ko . kvm.ko là một module được tích hợp sẵn trong Linux Kernel từ phiên bản Linux Kernel 2.6.60. kvm.ko đảm nhiệm vai trò hỗ trợ máy ảo chạy trực tiếp native code trên CPU vật lý. Một thành phần cần thiết khác để giúp KVM hoạt động là libvirt. libvirt đảm nhiệm vai trò nhận yêu cầu quản trị từ người dùng và chuyển nó sang cho hypervisor(ở đây là KVM) thực hiện. Các thành phần này sẽ được tìm hiểu kỹ ở chương tiếp theo.
 
+## <a name="intenal"></a>3. Các thành phần của KVM
+### 3.1 Libvirt
 
+Libvirt là một lớp trừu tượng trung gian giữa hypervisor và các công cụ quản lý máy ảo.
+
+![.](src-image/w2_5.png)
+
+Libvirt không chỉ hỗ trợ KVM mà còn hỗ trợ các hypervisor khác như Xen, ESX, OpenVZ,... Như đã nói từ trước, mục tiêu của libvirt là cung cấp một lớp chung ổn định để hỗ trợ việc quản lý các máy ảo chạy trên một hypervisor. Công việc của libvirt và các libvirt tool sẽ là tạo, chỉnh sửa, giám sát, điều khiển, di chuyển,... các máy ảo. Trên Linux, libvirt chạy như một tiến trình nền (daemon). Tên của tiến trình nền đó là libvirtd. Dựa trên kết nối URI (Uniform Resource Identifier) lấy từ người dùng, libvirtd sẽ tạo kết nối đến hypervisor. 
+
+Đảm nhiện việc nhận yêu cầu của người dùng, Libvirt có 2 công cụ là virsh và virt-manager. virsh (virtual shell) là một command line interface cung cấp giao diện dòng lệnh cho phép người dùng quản lý máy ảo. Nhìn chung virsh được sử dụng chủ yếu bởi người dùng có kinh nghiệm. Bên cạnh đó, một công cụ khác phổ biến là virt-manager. virt-manager là một graphic user interface cung cấp giao diện đồ họa người dùng cho phép người dùng quản lý máy ảo. virt-manager trực quan dễ sử dụng. Hai công cụ này khi hoạt động sẽ nhận yêu cầu người dùng và yêu cầu libvirtd gửi lệnh tương ứng tới hypervisor.
