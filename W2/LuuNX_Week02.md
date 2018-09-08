@@ -25,3 +25,5 @@
  Dựa trên hình chúng ta có thể thấy, ảo hóa sẽ được thực hiện trên mọi thành phần. Ví dụ, công nghệ SDN (Software Define Network) thực hiện ảo hóa mạng, công nghệ SDS (Software Define Storage) thực hiện ảo hóa lưu trữ, … Trong khuôn khổ tìm hiểu về KVM, chúng ta tập chung vào Software Virtualization.
 
 ## <a name="kvm"></a>2. Giới thiệu chung về KVM
+** Lịch Sử **
+Kernel-based Virtual Machine (KVM) là một phần của Linux Kernel. KVM được giới thiệu lần đầu vào ngày 19-10-2006 bởi Avi Kivity. KVM đại diện cho thế hệ phần mềm ảo hóa mã nguồn mở mới nhất. Mục tiêu của dự án là tạo ra phần mềm ảo hóa hiện đại dựa trên kinh nghiệm của những thế hệ công nghệ ảo hóa trước đó và sự thúc đẩy từ công nghệ phần cứng hiện đại VT-x, AMD-V.
