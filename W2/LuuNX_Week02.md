@@ -1,9 +1,10 @@
 # Tìm Hiểu KVM Hypervisor
 * Tuần 2
 * Người thực hiện: Nguyễn Xuân Lưu
-## Mục Lục
+## [1. Giới thiệu chung về công nghệ ảo hóa](#vir)
+## [2. Giới thiệu chung về KVM](#kvm)
 
-## 1. Giới thiệu chung về công nghệ ảo hóa
+## <a name="vir"> </a>1. Giới thiệu chung về công nghệ ảo hóa
   **Ảo hóa** là một cách tiếp cận nhằm chia sẻ tài nguyên để đơn giản hóa việc quản lý và tăng giá trị sử dụng của tài nguyên công nghệ. Điều này dẫn đến việc tối ưu hóa các yêu cầu về kinh tế. Trong công nghệ, ảo hóa được hiểu đơn giản là công nghệ tạo ra môi trường phần cứng không thực.
   
   **Tại sao cần ảo hóa?**
@@ -23,4 +24,4 @@
  
  Dựa trên hình chúng ta có thể thấy, ảo hóa sẽ được thực hiện trên mọi thành phần. Ví dụ, công nghệ SDN (Software Define Network) thực hiện ảo hóa mạng, công nghệ SDS (Software Define Storage) thực hiện ảo hóa lưu trữ, … Trong khuôn khổ tìm hiểu về KVM, chúng ta tập chung vào Software Virtualization.
 
-## 2. Giới thiệu chung về KVM
+## <a name="kvm"></a>2. Giới thiệu chung về KVM
