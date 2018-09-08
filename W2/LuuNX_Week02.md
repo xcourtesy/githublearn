@@ -69,4 +69,14 @@ Việc sử dụng libvirt để quản lý các máy ảo sẽ được tiếp 
 
 ## 3.2 QEMU
 
+Quick Emulator (QEMU) là một công cụ mô phỏng (emulator) và ảo hóa (virtualizer). Khi được dùng ở chức năng mô phỏng, QEMU có thể làm cho các OS hoặc chương trình trên một hệ thống (ví dụ ARM board với kiến trúc RISC) chạy trên được một hệ thống khác (intel X86 có kiến trúc CISC). Công nghệ được QEMU sử dụng ở đây là dynamic translation.
+
+Ở chế độ mô phỏng, QEMU là một hypervisor độc lập thực thụ. QEMU cho phép một hệ điều hành với kiến trúc A chạy trên nền tảng kiển trúc B. Công việc chuyển đỗi do công nghệ binary translation đảm nhiệm. Đối với QEMU, nó là Tiny Code Generator (TCG). TCG chuyển đỗi code viết cho một loại vi xử lý sang một loại khác để chạy. Công việc của TCG được mô tả đơn giản như hình dưới.
+
+![.](src-image/w2_6.png)
+
+Ở chế độ ảo hóa, QEMU chạy các guest code trực tiếp trên CPU máy gốc dẫn đến hiệu năng xử lý đạt tối đa. Điều này sẽ diễn ra khi QEMU hoạt động đi cùng Xen hoặc KVM. Bên cạnh việc tạo CPU ảo, QEMU còn hỗ trợ ảo hóa hầu hết các thiết bị ngoại vi khác như ổ đĩa, mạng, USB, PCI, VGA,... Khi hoạt động cùng KVM, QEMU còn hỗ trợ việc tạo và khởi chạy máy ảo, ảo hóa không gian địa chỉ vật lý trong không gian địa chỉ user mode. Ngoài ra, QEMU cũng hỗ trợ việc tạo ra các POSIX Thread cho vCPU của máy ảo. Mô hình chi tiết như hình dưới:
+
+![.](src-image/w2_7.png)
+
 
