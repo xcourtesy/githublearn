@@ -26,4 +26,23 @@
 
 ## <a name="kvm"></a>2. Giới thiệu chung về KVM
 **Lịch Sử**
+
 Kernel-based Virtual Machine (KVM) là một phần của Linux Kernel. KVM được giới thiệu lần đầu vào ngày 19-10-2006 bởi Avi Kivity. KVM đại diện cho thế hệ phần mềm ảo hóa mã nguồn mở mới nhất. Mục tiêu của dự án là tạo ra phần mềm ảo hóa hiện đại dựa trên kinh nghiệm của những thế hệ công nghệ ảo hóa trước đó và sự thúc đẩy từ công nghệ phần cứng hiện đại VT-x, AMD-V.
+
+Công nghệ KVM sử dụng dựa trên năng lực hỗ trợ ảo hóa phần cứng từ các CPU của intel và amd. Việc tìm hiểu về năng lực này sẽ giúp chúng ta có cái nhìn cơ sở cho việc tìm hiểu KVM.
+
+### <a name ="protect_ring"></a>2.1 Công nghệ Hardware-assisted Virtualization
+Trong khoa học máy tính, khái niệm Protection Rings hay hierarchical protection domains dùng để chỉ các mức độ phân cấp truy cập dữ liệu của hệ thống.
+![.](src-image/w2_2.png)
+
+Sự phân cấp này giúp bảo vệ dữ liệu và ngăn ngừa các lỗi xảy ra về bảo mật khi hệ thống hoạt động. Cũng chính nhờ sự phân cấp này mà tính bảo mật của hệ thống máy tính được đảm bảo.
+
+Như hình trên, các mức phân quyền được đánh số từ cao nhất tới thấp nhất. Mức Ring 0 có quyền cao nhất và trực tiếp tương tác được với phần cứng vật lý như CPU và bộ nhớ. Mức Ring 1 và 2 thường ít được sử dụng. Hầu hết các hệ thống nói chung đều chỉ sử dụng hai mức phần quyền, thậm chí kể cả khi CPU hỗ trợ nhiều mức phân quyền hơn. Hai chế độ chính của CPU là kernel mode và user mode. Từ quan điểm hệ thống, Ring 0 được gọi là kernel mode hay supervisor mode và Ring 3 là user mode. Như chúng ta để ý thấy trên hình, các ứng dụng sẽ được chạy ở Ring 3.
+
+Các hệ điều hành như Linux hay Windows cũng đều sử dụng mô hình supervisor/kernel mode và user mode. Một user mode hầu như không thể làm được gì nếu nó không nhờ đến sự trợ giúp từ kernel mode. Bởi vì chỉ kernel mode mới có quyền truy cập vào bộ nhớ, CPU và các cổng IO. Do vậy, hệ điều hành Linux hay Windows sẽ đều chạy ở mức kernel mode hay Ring 0 để có quyền quản lý tài nguyên và truy cập phần cứng.
+
+Vấn đề về phân quyền truy cập sẽ không có gì đáng bàn khi sử dụng một hệ thống thông thường. Tuy nhiên, khi thực hiện ảo hóa, vấn đề này trở nên phức tạp. Các công cụ ảo hóa (hypervisor/virtual machine monitor) đều cần truy cập bộ nhớ, CPU và thiết bị ngoại vi từ phần cứng vật lý. Bởi vì vậy, nghiễm nhiên, hypervisor phải được đặt ở Ring 0. Và vì hypervisor chiếm chỗ, các máy ảo ( Virtual Machines hay VM) sẽ không có khả năng đặt ở Ring 0 nữa. Mặt khác, các hệ điều hành khi được cài đặt như một máy ảo cũng không biết được rằng chúng là máy ảo. Hệ điều hành của máy ảo sẽ vẫn yêu cầu quyền truy cập tất cả mọi tài nguyên ở mức Ring 0 như thông thường. Và vậy là, ta phải tìm cách đặt máy ảo chạy ở các mức Ring khác hoặc chỉnh sửa lại nó để nó chạy ở chế độ user mode.
+
+Intel và AMD đều nhận ra sự thách thức trên. Họ đã độc lập phát triển một tính năng mới cho các dòng vi xử lý kiến trúc X86 của mình. Tính năng này có tên là Hardware-assisted Virtualization. Intel gọi nó là Virtualization Technology (VT) và AMD gọi nó là Secure Virtual Machine (SVM). Tính năng này cho phép các máy ảo chạy ở đúng mức phân quyền mong muốn là Ring 0. Còn vị trí vốn có Ring 0 là các hypervisor sẽ chạy ở một mức phân quyền mới là Ring -1. Do sự hỗ trợ này, hiệu năng ảo hóa tăng lên đáng kể và việc thiết kế một giải pháp ảo hóa cũng trở nên đơn giản hơn.
+
+
