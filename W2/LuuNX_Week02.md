@@ -79,4 +79,7 @@ Quick Emulator (QEMU) là một công cụ mô phỏng (emulator) và ảo hóa 
 
 ![.](src-image/w2_7.png)
 
+Để chạy được guest code trên CPU máy gốc thì QEMU sẽ tạo ra các posix thread. Các vCPU sẽ được chạy trên kernel máy gốc như các posix thread. Portable Operating System Interface hay posix là một chuẩn của IEEE dùng để định nghĩa một tập hợp các dịch vụ của hệ điều hành. Các chương trình tuân theo chuẩn POXIS có thể dễ dàng chuyển từ hệ thống này sang hệ điều hành khác. POSIX dựa trên các dịch vụ hệ thống của UNIX, nhưng nó được tạo theo một cách riêng cho phép nó có thể được cài đặt trên các hệ điều hành khác.
+
+
 
