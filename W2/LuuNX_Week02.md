@@ -44,6 +44,60 @@ Intel và AMD đều nhận ra sự thách thức trên. Họ đã độc lập 
 
 ![.](src-image/w2_3.png)
 
+
+Để kiểm tra sự hỗ trợ của công nghệ Hardware-assisted Virtualization, ta có hai cách.
+
+Thứ nhất, kiểm tra thông qua file /proc/cpuinfo. Trong màn hình terminal, gõ lệnh:
+
+```shell
+grep --color -Ew 'vmx|svm|lm' /proc/cpuinfo
+```
+
+Lệnh trên sẽ tiến hành tìm kiếm các từ vmx, svm, lm trong file cpuinfo. Ý nghĩa các cụm từ ấy như sau:
+* vmx : Virtual Machine Extension Công nghệ ảo hóa phần cứng VT-x do cpu Intel hỗ trợ
+* svm : Secure Virtual Machine Công nghệ ảo hóa phần cứng AMD-V do cpu AMD hỗ trợ
+* lm : hỗ trợ 64-bit
+Nếu có xuất hiện các từ ấy nghĩa là cpu hỗ trợ các công nghệ ấy. Điều kiện là máy bạn phải hỗ trợ vmx hoặc svm. Ví dụ:
+
+```shell
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm cpuid_fault epb invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid xsaveopt dtherm ida arat pln pts flush_l1d
+```
+
+Thứ hai, kiểm tra thông qua thông tin về CPU. Trong màn hình terminal, gõ
+
+```shell
+lscpu
+```
+
+Lệnh trên sẽ hiển thị các thông số của CPU, tại dòng Virtualization, ta có thể nhìn thấy được công nghệ ảo hóa được hỗ trợ. Ví dụ:
+
+```shell
+Architecture:          x86_64
+CPU op-mode(s):        32-bit, 64-bit
+Byte Order:            Little Endian
+CPU(s):                4
+On-line CPU(s) list:   0-3
+Thread(s) per core:    2
+Core(s) per socket:    2
+Socket(s):             1
+NUMA node(s):          1
+Vendor ID:             GenuineIntel
+CPU family:            6
+Model:                 69
+Model name:            Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz
+Stepping:              1
+CPU MHz:               2304.050
+CPU max MHz:           2700,0000
+CPU min MHz:           800,0000
+BogoMIPS:              4788.72
+Virtualization:        VT-x
+L1d cache:             32K
+L1i cache:             32K
+L2 cache:              256K
+L3 cache:              3072K
+NUMA node0 CPU(s):     0-3
+```
+
 ### <a name="kvm2"></a>2.2 Kernel-based Virtual Machine
 
 Kernel-based Virtual Machine (KVM) là một module của Linux Kernel. KVM được giới thiệu lần đầu vào ngày 19/10/2006 bởi Avi Kivity. KVM đại diện cho thế hệ phần mềm ảo hóa mã nguồn mở mới nhất. Mục tiêu của dự án là tạo ra phần mềm ảo hóa hiện đại dựa trên kinh nghiệm của những thế hệ công nghệ ảo hóa trước đó và sự thúc đẩy từ công nghệ phần cứng hiện đại VT-x, AMD-V.
