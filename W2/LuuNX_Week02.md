@@ -4,6 +4,7 @@
 ## [1. Giới thiệu chung về công nghệ ảo hóa](#vir)
 ## [2. Giới thiệu chung về KVM](#kvm)
 ## [3. Các thành phần của KVM](#internal)
+## [Tài Liệu Tham Khảo](#thamkhao)
 
 ## <a name="vir"> </a>1. Giới thiệu chung về công nghệ ảo hóa
   **Ảo hóa** là một cách tiếp cận nhằm chia sẻ tài nguyên để đơn giản hóa việc quản lý và tăng giá trị sử dụng của tài nguyên công nghệ. Điều này dẫn đến việc tối ưu hóa các yêu cầu về kinh tế. Trong công nghệ, ảo hóa được hiểu đơn giản là công nghệ tạo ra môi trường phần cứng không thực.
@@ -102,10 +103,10 @@ Về hoạt động sâu bên trong, ta tìm hiểu thông qua sơ đồ làm vi
 
 Hoạt động sâu bên trong ở mức kernel mode tương đối phức tạp. Khi chạy các tiến trình máy ảo, các tiến trình hiện tại của máy gốc sẽ được tạm dừng và sẽ được khôi phục khi tiến trình máy ảo được thực hiện hoàn thành.
 
-## Tài Liệu Tham Khảo
+## <a name="thamkhao"></a> Tài Liệu Tham Khảo
 
-* 1. Humble Devassy Chirammal, Prasad Mukhedkar, Anil Vettathu, *Mastering KVM Virtualization*, Packt Publishing, 2016
-* 2. www.linux-kongress.com truy nhập cuối cùng ngày 09/09/2018
-* 3. www.linux-kvm.org truy nhập cuối cùng ngày 08/09/2018
+* Humble Devassy Chirammal, Prasad Mukhedkar, Anil Vettathu, *Mastering KVM Virtualization*, Packt Publishing, 2016
+* www.linux-kongress.com truy nhập cuối cùng ngày 09/09/2018
+* www.linux-kvm.org truy nhập cuối cùng ngày 08/09/2018
 
 
