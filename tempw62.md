@@ -51,6 +51,8 @@ QEMU là một tiến trình, nó sẽ được cấp phát không gian địa c
 
 Từ góc nhìn hệ thống , qemu là một tiến trình được chạy và lên lịch thông thường. Các máy ảo chạy trên một máy chủ thông qua các tiến trình QEMU không biết nhau và hệ điều hành máy chủ cũng không thể can thiệp sâu vào dữ liệu và các tiến trình bên trong máy ảo. Tiến trình QEMU đảm nhiệm hai nhiệm vụ chính là thực thi guest code và ảo hóa các thiết bị. Để thực hiện được các công việc này, qemu sẽ được xây dựng dựa trên một kiến trúc định hướng sự kiện kèm theo các luồng chạy song song.
 
+![.]()
+
 ### Source Code
 * Địa chỉ source code QEMU:
 ```
@@ -115,8 +117,7 @@ Vòng main_loop_wait() sẽ thực hiện lặp 3 công việc:
 * Dispatch: Thực thi lệnh tương ứng cho file descriptor ready (phản hồi từ poll) hoặc timer-expired, BH 
 
 ![.](../src-image/w6_3.PNG)
- 
-### Accelerator : Tiny Code Generator
+
 
 ### Accelerator : KVM
 
