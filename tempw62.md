@@ -34,15 +34,46 @@ QEMU không phụ thuộc vào các phương thức hiển thị đồ họa đ�
 ## Cài đặt QEMU trên Ubuntu 16.04
 
 ## Kiến trúc QEMU
-### Tổng Quan
+
+Tìm hiểu về chế độ system emulation của QEMU.
+
+### High Level Overview
+
+QEMU là một phần mềm, khi hoạt động nó chạy như một tiến trình trên máy chủ. Mỗi máy ảo khi được ảo hóa bằng QEMU sẽ tương ứng với một tiến trình QEMU chạy độc lập.
+
+![.](../src-image/w6_1.png)
+
+Khi một tiến trình QEMU khởi chạy, nó sẽ tạo trường cho máy ảo, khởi động hệ điều hành máy ảo. Đồng thời khi máy ảo tắt (do shutdown, poweroff), tiến trình QEMU sẽ bị hủy theo. Tuy nhiên trong trường hợp máy ảo reboot, tiến trình QEMU sẽ tiếp tục hoạt động.
+
+QEMU là một tiến trình, nó sẽ được cấp phát không gian địa chỉ nhớ (RAM) riêng. Máy ảo chạy trên tiến trình QEMU sẽ xem RAM của QEMU như physical RAM.
+
+![.]()
+
+Từ góc nhìn hệ thống , qemu là một tiến trình được chạy và lên lịch thông thường. Các máy ảo chạy trên một máy chủ thông qua các tiến trình QEMU không biết nhau và hệ điều hành máy chủ cũng không thể can thiệp sâu vào dữ liệu và các tiến trình bên trong máy ảo. Tiến trình QEMU đảm nhiệm hai nhiệm vụ chính là thực thi guest code và ảo hóa các thiết bị. Để thực hiện được các công việc này, qemu sẽ được xây dựng dựa trên một kiến trúc định hướng sự kiện kèm theo các luồng chạy song song.
+
+### Source Code
+* Địa chỉ source code QEMU:
+```
+https://github.com/qemu/qemu
+```
+Source code của QEMU có kích thước lớn, do cộng đồng đóng góp từ năm 2006 và có khoảng hơn 6000 file code. 
+
+Các file quan trọng trong quá trình chạy QEMU bao gồm /vl.c, /cpus.c, /execall.c, /exec.c, /cpu-exec.c. Trong đó file vl.c chứa hàm main của QEMU. Hàm này chịu trách nhiệm khởi tạo tài nguyên cho máy ảo như kích thước RAM, số các CPU, số thiết bị,... 
+
+QEMU thực hiện phỏng tạo các phần cứng ảo cho máy ảo. Các file source code đảm nhận nhiệm vụ này nằm trong thư mục /hw của source code.
+
+Kế đến, thực hiện việc dịch động (Dynamic Translation) từ guest code sang host code, QEMU sử dụng Tiny Code Generator. Để thực hiện công việc, TCG cần nắm rõ kiến trúc tập lệnh của máy chủ (host) và máy ảo (target). Các source code phục vụ công việc này nằm trong các thư mục /target và /tcg. Trong đó /target/xxx là thư mục lưu source code phục vụ kiểu kiến trúc máy đích xxx . Ví dụ /target/i386 . Còn thư mục /tcg lưu trữ các file source của TCG và source code kiến trúc tập lệnh máy chủ. 
+
+
+### Internal
 Việc chạy một máy ảo bao gồm thực thi guest code, điều khiển bộ định thời, chạy các I/O, và phản hồi lại các lệnh giám sát hệ thống. Thực hiện tất cả điều này yêu cầu một kiến trúc phù hợp. Có hai kiến trúc phù hợp cho câc chương trình cần phản hồi sự kiện đến từ nhiều tài nguyên:
 
 * Parallel Architecture: Chia công việc thành các tiến trình (processes) hoặc các luồng (threads) và thực thi song song.
 * Event-driven Architecture: Phản hồi sự kiện bằng cách chạy một vòng lặp chính để nhận và xử lý sự kiện.
 
-QEMU sử dụng kiến trúc hybrid bao gồm event-driven đi cùng các luồng. Điều này là hợp lý vì một vòng lặp sự kiện đơn không phù hợp với kiểu CPU đa lõi của máy chủ khi nó chỉ có một luồng thực thi đơn. Thêm vào đó, thi thoảng, sẽ đơn giản hơn nếu viết các luồng riêng cho việc thwujc thi các công việc riêng biệt hơn là tích hợp tất cả vào một kiến trúc event-driven. Tuy nhiên, lõi của QEMU là kiến trúc event-driven và phần lớn code thực thi theo kiểu kiến trúc đó.
+QEMU sử dụng kiến trúc hybrid bao gồm event-driven đi cùng các luồng. Điều này là hợp lý vì một vòng lặp sự kiện đơn không phù hợp với kiểu CPU đa lõi của máy chủ khi nó chỉ có một luồng thực thi đơn. Thêm vào đó, thi thoảng, sẽ đơn giản hơn nếu viết các luồng riêng cho việc thực thi các công việc riêng biệt hơn là tích hợp tất cả vào một kiến trúc event-driven. Tuy nhiên, lõi của QEMU là kiến trúc event-driven và phần lớn code thực thi theo kiểu kiến trúc đó.
 
-### Event-driven
+#### Event-driven
 
 Kiến trúc event-driven tập trung vào một vòng lặp sự kiện chính, tại đó, các sự kiện sẽ được điều hướng tới thủ tục giải quyết nó.
 
@@ -60,8 +91,29 @@ Nhiệm vụ của main_loop_wait() bao gồm:
 * Chạy các bộ định thời
 * Chạy các Bottom-Half (BH)
 
-Khi một file descriptor trở nên sẵn sàng, một bộ định thời hết hạn hoặc một BH được lên lịch chạy, vòng lặp sẽ khởi tạo một lời gọi để phản hồi lại sự kiện trên.
+Khi một file descriptor trở nên sẵn sàng, một bộ định thời hết hạn hoặc một BH được lên lịch chạy, vòng lặp sẽ khởi tạo một lời gọi để phản hồi lại sự kiện trên. Để thực hiện điều này, qemu sử dụng các loại system call như select(2), pool(2) hoặc epool(2).
 
+
+Trong tài liệu Improve the QEMU Event Loop, Fam Zheng, KVM Forum 2015, hoạt động của main_loop_wait() được trình bày giản lược. Các sự kiện đến bao gồm 3 nhóm:
+
+* các IOthread thông thường
+* nhóm các dispatched fd events
+  * aio: block I/O, ioeventfd
+  * iohandler: net, nbd, audio, ui, vfio, ... 
+  * slirp: -net user 
+  * chardev
+* nhóm non-fd services
+  * timers
+  * bottom halves
+  
+Vòng main_loop_wait() sẽ thực hiện lặp 3 công việc:
+
+* Prepare: nạp các file descriptor cho system call poll
+* Poll: Gọi system call poll
+* Dispatch: Thực thi lệnh tương ứng cho file descriptor ready hoặc timer-expired, BH
+
+![.]()
+ 
 
 
 
