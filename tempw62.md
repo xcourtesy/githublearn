@@ -32,7 +32,7 @@ QEMU có thể mô phỏng các card mạng và chia sẻ kết nối mạng c�
 QEMU không phụ thuộc vào các phương thức hiển thị đồ họa đầu vào đầu ra trên hệ thống máy chủ. Thay vào đó, nó có thể cho phép một người truy cập vào màn hình của hệ điều hành máy ảo thông qua một máy chủ VNC tích hợp.
 
 ## Cài đặt QEMU trên Ubuntu 16.04
-
+//TODO
 ## Kiến trúc QEMU
 
 Tìm hiểu về chế độ system emulation của QEMU.
@@ -41,13 +41,13 @@ Tìm hiểu về chế độ system emulation của QEMU.
 
 QEMU là một phần mềm, khi hoạt động nó chạy như một tiến trình trên máy chủ. Mỗi máy ảo khi được ảo hóa bằng QEMU sẽ tương ứng với một tiến trình QEMU chạy độc lập.
 
-![.](../src-image/w6_1.png)
+![.](../src-image/w6_1.PNG)
 
 Khi một tiến trình QEMU khởi chạy, nó sẽ tạo trường cho máy ảo, khởi động hệ điều hành máy ảo. Đồng thời khi máy ảo tắt (do shutdown, poweroff), tiến trình QEMU sẽ bị hủy theo. Tuy nhiên trong trường hợp máy ảo reboot, tiến trình QEMU sẽ tiếp tục hoạt động.
 
 QEMU là một tiến trình, nó sẽ được cấp phát không gian địa chỉ nhớ (RAM) riêng. Máy ảo chạy trên tiến trình QEMU sẽ xem RAM của QEMU như physical RAM.
 
-![.]()
+![.](../src-image/w6_2.PNG)
 
 Từ góc nhìn hệ thống , qemu là một tiến trình được chạy và lên lịch thông thường. Các máy ảo chạy trên một máy chủ thông qua các tiến trình QEMU không biết nhau và hệ điều hành máy chủ cũng không thể can thiệp sâu vào dữ liệu và các tiến trình bên trong máy ảo. Tiến trình QEMU đảm nhiệm hai nhiệm vụ chính là thực thi guest code và ảo hóa các thiết bị. Để thực hiện được các công việc này, qemu sẽ được xây dựng dựa trên một kiến trúc định hướng sự kiện kèm theo các luồng chạy song song.
 
@@ -73,7 +73,9 @@ Việc chạy một máy ảo bao gồm thực thi guest code, điều khiển b
 
 QEMU sử dụng kiến trúc hybrid bao gồm event-driven đi cùng các luồng. Điều này là hợp lý vì một vòng lặp sự kiện đơn không phù hợp với kiểu CPU đa lõi của máy chủ khi nó chỉ có một luồng thực thi đơn. Thêm vào đó, thi thoảng, sẽ đơn giản hơn nếu viết các luồng riêng cho việc thực thi các công việc riêng biệt hơn là tích hợp tất cả vào một kiến trúc event-driven. Tuy nhiên, lõi của QEMU là kiến trúc event-driven và phần lớn code thực thi theo kiểu kiến trúc đó.
 
-#### Event-driven
+![.]()
+
+#### Main Loop
 
 Kiến trúc event-driven tập trung vào một vòng lặp sự kiện chính, tại đó, các sự kiện sẽ được điều hướng tới thủ tục giải quyết nó.
 
@@ -110,11 +112,13 @@ Vòng main_loop_wait() sẽ thực hiện lặp 3 công việc:
 
 * Prepare: nạp các file descriptor cho system call poll
 * Poll: Gọi system call poll
-* Dispatch: Thực thi lệnh tương ứng cho file descriptor ready hoặc timer-expired, BH
+* Dispatch: Thực thi lệnh tương ứng cho file descriptor ready (phản hồi từ poll) hoặc timer-expired, BH 
 
-![.]()
+![.](../src-image/w6_3.PNG)
  
+### Accelerator : Tiny Code Generator
 
+### Accelerator : KVM
 
 
 
