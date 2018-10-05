@@ -32,7 +32,25 @@ QEMU có thể mô phỏng các card mạng và chia sẻ kết nối mạng c�
 QEMU không phụ thuộc vào các phương thức hiển thị đồ họa đầu vào đầu ra trên hệ thống máy chủ. Thay vào đó, nó có thể cho phép một người truy cập vào màn hình của hệ điều hành máy ảo thông qua một máy chủ VNC tích hợp.
 
 ## Cài đặt QEMU trên Ubuntu 16.04
-//TODO
+
+Cài đặt QEMU từ source code
+
+Mở terminal, gõ lệnh
+
+```shell
+sudo apt install zlib1-dev flex bison libcanberra-gtk*
+wget https://download.qemu.org/qemu-3.0.0.tar.xz
+tar xvJf qemu-3.0.0.tar.xz
+cd qemu-3.0.0
+mkdir build
+cd build
+../configure --enable-debug
+time sudo make
+sudo make install
+```
+
+
+
 ## Kiến trúc QEMU
 
 Tìm hiểu về chế độ system emulation của QEMU.
@@ -118,7 +136,55 @@ Vòng main_loop_wait() sẽ thực hiện lặp 3 công việc:
 
 ![.](../src-image/w6_3.PNG)
 
+Cụ thể, thông qua quá trình debug source code, các hàm được gọi lần lượt khi chạy máy ảo bao gồm
 
+Lệnh khởi chạy máy ảo với file DOS.iso chứa hệ điều hành DOS
+
+```
+time qemu-system-x86_64 -cdrom DOS.iso
+```
+
+Các hàm được gọi
+
+```
+
+call main
+
+  call mainloop time 1
+         call main_loop_should_exit
+         exit main_loop_should_exit return true 
+  exit mainloop
+
+  call mainloop time 2
+         call main_loop_should_exit
+         exit main_loop_should_exit return false
+
+
+         call main_loop_wait time 1
+                  call os_host_main_loop_wait
+                  exit os_host_main_loop_wait
+         exit main_loop_wait
+
+
+         call main_loop_wait time 2
+                  call os_host_main_loop_wait
+                  exit os_host_main_loop_wait
+         exit main_loop_wait
+.
+.
+.
+
+
+         call main_loop_wait time n
+                  call os_host_main_loop_wait
+                  exit os_host_main_loop_wait
+         exit main_loop_wait
+
+  exit mainloop
+  
+exit main
+
+```
 ### Accelerator : KVM
 
 
