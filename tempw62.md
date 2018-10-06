@@ -189,6 +189,8 @@ exit main
 Mô hình vòng lặp main loop
 ![.]()
 
+```c
+
 main() /* file vl.c */
 {
 
@@ -241,6 +243,7 @@ main_loop_wait() /* file util/m.c */
 
 }
 
+```
 
 ### Accelerator : KVM
 
