@@ -196,18 +196,19 @@ main() /* file vl.c */
 
 /* Khởi tạo các biến */
 /* Đọc yêu cầu từ lệnh chạy máy ảo. Ví Dụ: qemu-system-x86_64 -cdrom DOS.iso -hda image.qcow2 */
-/* Khởi tạo các thiết bị phần cứng ảo hóa gồm RAM, CPU, VGA, Accelerator, Timers, Bluetooth, USB, sound hardware */
+/* Khởi tạo các thiết bị phần cứng ảo hóa gồm RAM, CPU, VGA, Accelerator, Timers, Bluetooth, 
+*  USB, sound hardware,... */
 
 mainloop(); 
 
-/* làm sạch bộ nhớ trước khi đóng tiến trình QEMU */
+/* Sau khi thoát khỏi vòng lặp main_loop, tiến hành làm sạch bộ nhớ trước khi đóng tiến trình QEMU */
 
 
 }
 
 mainloop() /* file vl.c */
 {
-/* Kiểm tra điều kiện thoát trước khi lặp vòng lặp tạo main_loop_wait*/
+/* Kiểm tra điều kiện dừng trước khi lặp vòng lặp tạo main_loop_wait*/
 while (!main_loop_should_exit()) 
 				{
         main_loop_wait(false);
@@ -224,7 +225,7 @@ main_loop_should_exit() /* file vl.c */
 * Yêu cầu shutdown từ qemu_shutdown_requested()
 */
 
-/* Thực thi các công việc khi nhận các request khác điều kiện dừng*/
+/* Thực thi các công việc khác khi nhận các request khác với điều kiện dừng*/
 /*
 * qemu_debug_requested()
 * qemu_suspend_requested()
