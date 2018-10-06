@@ -69,7 +69,7 @@ QEMU là một tiến trình, nó sẽ được cấp phát không gian địa c
 
 Từ góc nhìn hệ thống , qemu là một tiến trình được chạy và lên lịch thông thường. Các máy ảo chạy trên một máy chủ thông qua các tiến trình QEMU không biết nhau và hệ điều hành máy chủ cũng không thể can thiệp sâu vào dữ liệu và các tiến trình bên trong máy ảo. Tiến trình QEMU đảm nhiệm hai nhiệm vụ chính là thực thi guest code và ảo hóa các thiết bị. Để thực hiện được các công việc này, qemu sẽ được xây dựng dựa trên một kiến trúc định hướng sự kiện kèm theo các luồng chạy song song.
 
-![.]()
+
 
 ### Source Code
 * Địa chỉ source code QEMU:
@@ -93,7 +93,7 @@ Việc chạy một máy ảo bao gồm thực thi guest code, điều khiển b
 
 QEMU sử dụng kiến trúc hybrid bao gồm event-driven đi cùng các luồng. Điều này là hợp lý vì một vòng lặp sự kiện đơn không phù hợp với kiểu CPU đa lõi của máy chủ khi nó chỉ có một luồng thực thi đơn. Thêm vào đó, thi thoảng, sẽ đơn giản hơn nếu viết các luồng riêng cho việc thực thi các công việc riêng biệt hơn là tích hợp tất cả vào một kiến trúc event-driven. Tuy nhiên, lõi của QEMU là kiến trúc event-driven và phần lớn code thực thi theo kiểu kiến trúc đó.
 
-![.]()
+![.](../src-image/w6_5.PNG)
 
 #### Main Loop
 
